@@ -1,21 +1,32 @@
+/**
+ * GraphAdjMatrix.java
+ * @author Alex Wang
+ *
+ */
 public class GraphAdjMatrix implements Graph {
 
 	private int size;
 	private int[][] graph;
+
 	
-	public GraphAdjMatrix(int size){
+	/**
+	 * Constructor
+	 * @param size
+	 * 			give number of vertices in graph
+	 */
+	public GraphAdjMatrix(int size) {
 		this.size = size;
 		graph = new int[size][size];
 	}
-	
+
 	@Override
 	public void addEdge(int v1, int v2) {
-		//for PA08
+		// for PA08
 	}
 
 	@Override
 	public void topologicalSort() {
-		//for PA08
+		// for PA08
 	}
 
 	@Override
@@ -33,26 +44,26 @@ public class GraphAdjMatrix implements Graph {
 	public int createSpanningTree() {
 		int[] known = new int[size];
 		int[] path = new int[size];
-		for(int i=0; i <size; i++){
+		for (int i = 0; i < size; i++) {
 			path[i] = -1;
 		}
 		int[] cost = new int[size];
-		for(int j = 0; j <size; j++){
-			cost[j] = 1000000;
+		for (int j = 0; j < size; j++) {
+			cost[j] = Integer.MAX_VALUE;
 		}
-		/*initialization done*/
-		
-		cost[0] =0;
-		for(int k=0; k< size; k++){
-			
-			if(known[k] ==0){
-				known[k] =1;
-				
-				for(int m=0; m<size; m++){
-					if(graph[k][m] > 0){ //there is edge between curr and m
-			
-						if(known[m] ==0 && cost[m] > graph[k][m]){
-							cost[m] = graph[k][m];//update smallest cost
+		/* initialization done */
+
+		cost[0] = 0;
+		for (int k = 0; k < size; k++) {
+
+			if (known[k] == 0) {
+				known[k] = 1;
+
+				for (int m = 0; m < size; m++) {
+					if (graph[k][m] > 0) { // there is edge between curr and m
+
+						if (known[m] == 0 && cost[m] > graph[k][m]) {
+							cost[m] = graph[k][m];// update smallest cost
 							path[m] = k;
 						}
 					}
@@ -60,10 +71,10 @@ public class GraphAdjMatrix implements Graph {
 			}
 		}
 		int sum = 0;
-		for(int n=0; n < size ; n++){
+		for (int n = 0; n < size; n++) {
 			sum = sum + cost[n];
 		}
 		return sum;
 	}
-	
+
 }
