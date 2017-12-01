@@ -10,15 +10,12 @@ public class GraphAdjMatrix implements Graph {
 	
 	@Override
 	public void addEdge(int v1, int v2) {
-		//undirected 
-		graph[v1][v2] = 0;
-		graph[v2][v1] = 0;
+		//for PA08
 	}
 
 	@Override
 	public void topologicalSort() {
-		// TODO Auto-generated method stub
-
+		//for PA08
 	}
 
 	@Override
