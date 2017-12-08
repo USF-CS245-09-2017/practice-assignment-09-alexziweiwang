@@ -17,11 +17,6 @@ public class GraphAdjMatrix implements Graph {
 	public GraphAdjMatrix(int size) {
 		this.size = size;
 		graph = new int[size][size];
-		for (int i=0; i < size; i++){
-			for(int j =0; j < size; j++){
-				graph[i][j] = -1;
-			}
-		}
 	}
 
 	@Override
@@ -46,7 +41,7 @@ public class GraphAdjMatrix implements Graph {
 
 	/**
 	 * Returns the weight of the edge between vertices v1 and v2. 
-	 * May return 0 or a negative number if such an edge does not exist
+	 * May return 0 if such an edge does not exist
 	 */
 	@Override
 	public int getEdge(int v1, int v2) {
@@ -73,35 +68,51 @@ public class GraphAdjMatrix implements Graph {
 		}
 		/* initialization done */
 
-		cost[0] =0;//TODO hardcoded?
-		for (int k = 0; k < size; k++) {
+		int leastCost=Integer.MAX_VALUE;
 
-			if (known[k] == 0) { //this vertex not known
-				int m;
-				known[k] = 1;
-				for (m = 0; m < size; m++) {//go through k's row in matrix
-					if (graph[k][m] > 0) { // there is edge between k and m
-						if (known[m] == 0 && cost[m] > graph[k][m]) {
-							cost[m] = graph[k][m];// update smallest cost
-							path[m] = k;
+		int curr = 0;//start with 0
+		cost[curr] =0;
+		path[curr] = curr ;
+		int bestDest = curr;
+
+		for (int k = 0; k < size; k++) {
+			curr = k;
+
+			while (known[curr] == 0) { //go through every unknown vertex
+				leastCost = Integer.MAX_VALUE;
+				known[curr] = 1;
+				for (int m = 0; m < size; m++) {//go through curr's row in matrix
+					if (graph[curr][m] > 0) { // there is edge between curr and m
+						if (known[m] == 0 && cost[m] > graph[curr][m]) {
+							cost[m] = graph[curr][m];// update smallest cost
+							path[m] = curr;
+						}
+						if(graph[curr][m] <= leastCost){
+							leastCost = graph[curr][m];
+							bestDest = m;
 						}
 					}
 				}
-
-				/*Removes any edges in the graph which are 
-				 * not in the minimum spanning tree*/
-				for(m = 0; m < size; m++){
-					if (graph[k][m] != cost[m]){
-						graph[k][m] = -1; 
-					}
-				}
-				
+				curr = bestDest;//to the vertex with least cost
 			}
 		}
 
+		//remove all the edges which are not on spanning tree
+		int[][] spanningTree = new int[size][size];
+		for(int p=0; p < size; p++){
+			for(int q=0; q <size; q++){
+				if(q == path[p]){
+					spanningTree[p][q] = graph[p][q];
+					spanningTree[q][p] = graph[q][p];
+				}
+			}
+		}
+		graph = spanningTree;
+		
+		//add up the weight in total
 		int sum = 0;
 		for (int n = 0; n < size; n++) {
-			sum = sum + cost[n]; //add up the weight in total
+			sum = sum + cost[n]; 
 		}
 		return sum;
 	}
