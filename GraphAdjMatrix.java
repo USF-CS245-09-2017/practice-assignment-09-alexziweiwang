@@ -70,7 +70,7 @@ public class GraphAdjMatrix implements Graph {
 
 		int leastCost = Integer.MAX_VALUE;
 
-		int curr = 0;// start with 0
+		int curr = minUnknown(cost, known);// start with minimum unknown vertex
 		cost[curr] = 0;
 		path[curr] = curr;
 		int bestDest = curr;
@@ -78,7 +78,9 @@ public class GraphAdjMatrix implements Graph {
 		for (int k = 0; k < size; k++) {
 			curr = minUnknown(cost, known);
 
-			while (known[curr] == 0) { // go through every unknown vertex
+			
+			while (known[curr] == 0) { 
+				// go through all connected unknown vertices
 				leastCost = Integer.MAX_VALUE;
 				known[curr] = 1;
 				for (int m = 0; m < size; m++) {// go through curr's row in
@@ -137,7 +139,6 @@ public class GraphAdjMatrix implements Graph {
 				nextVertex = known[i];
 			}
 		}
-
 		return nextVertex;
 	}
 }
